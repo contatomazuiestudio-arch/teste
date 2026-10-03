@@ -1,0 +1,10 @@
+{
+  "short_name": "MaziqueApp",
+  "name": "Mazique World Web App",
+  "icons": [],
+  "start_url": "./index.html",
+  "background_color": "#121214",
+  "theme_color": "#ff4757",
+  "display": "standalone",
+  "orientation": "landscape"
+}

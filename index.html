@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Mazique World Engine</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff4757">
+</head>
+<body>
+
+    <header id="top-bar">
+        <div class="top-row">
+            <div class="brand">🐶 MAZIQUE ENGINE V4.5</div>
+            <div class="stats">
+                <div class="stat-item stat-coin">🪙 <span id="coin-count">200</span></div>
+                <div class="stat-item stat-xp">⭐ Nv <span id="level-count">1</span> (<span id="xp-count">0</span> XP)</div>
+            </div>
+            <nav class="nav-buttons">
+                <button id="btn-nav-world" class="active" onclick="switchView('world')">🏡 Vila</button>
+                <button id="btn-nav-arcade" onclick="switchView('arcade')">🕹️️ Arcade</button>
+                <button id="btn-nav-shop" onclick="switchView('shop')">🛍️ Loja</button>
+                <button id="btn-nav-achievements" onclick="switchView('achievements')">🏆 Metas</button>
+                <button id="btn-nav-settings" onclick="switchView('settings')">⚙️ Config</button>
+            </nav>
+        </div>
+
+        <div class="pet-needs">
+            <div class="need-box">🍔 Fome <div class="bar-bg"><div id="fill-hunger" class="bar-fill"></div></div></div>
+            <div class="need-box">🧼 Higiene <div class="bar-bg"><div id="fill-hygiene" class="bar-fill"></div></div></div>
+            <div class="need-box">😄 Felicidade <div class="bar-bg"><div id="fill-happy" class="bar-fill"></div></div></div>
+        </div>
+    </header>
+
+    <main id="view-container">
+
+        <!-- MUNDO/VILA COM NOVOS LOTES -->
+        <section id="world-view">
+            <div class="drag-hint">👈 Arraste para explorar os lotes e a nova vizinhança 👉</div>
+
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+
+            <div class="pet-actions-overlay">
+                <button class="btn-care" onclick="feedPet()">🍔 Alimentar (🪙5)</button>
+                <button class="btn-care" onclick="cleanPet()">🧼 Banhar</button>
+                <button class="btn-care" onclick="playPet()">⚽ Brincar</button>
+            </div>
+
+            <div id="bg-layer" class="parallax-layer">
+                <div class="mountain" style="left: 100px;"></div>
+                <div class="mountain" style="left: 700px;"></div>
+                <div class="mountain" style="left: 1400px;"></div>
+                <div class="mountain" style="left: 2100px;"></div>
+            </div>
+
+            <div id="world-stage" style="width: 1800px;">
+                <!-- LOTE 01 -->
+                <div class="lot" style="left: 100px;" onclick="enterHouse('pedro')">
+                    <div class="lot-number">LOTE 01</div>
+                    <div class="lot-owner">Sua Casa</div>
+                    <div class="building house-pedro">Casa do Pedro</div>
+                </div>
+
+                <!-- LOTE 02 -->
+                <div class="lot" style="left: 450px;" onclick="switchView('arcade')">
+                    <div class="lot-number">LOTE 02</div>
+                    <div class="lot-owner">Arcade Center</div>
+                    <div class="building arcade-building">🕹️ ARCADE</div>
+                </div>
+
+                <!-- LOTE 03 -->
+                <div class="lot" style="left: 800px;" onclick="switchView('shop')">
+                    <div class="lot-number">LOTE 03</div>
+                    <div class="lot-owner">Boutique</div>
+                    <div class="building shop-building">🛍️ LOJA</div>
+                </div>
+
+                <!-- NOVO LOTE 04: PARQUE -->
+                <div class="lot" style="left: 1150px;" onclick="alert('🌳 Parque Municipal: Local de descanso dos cãezinhos!')">
+                    <div class="lot-number">LOTE 04</div>
+                    <div class="lot-owner">Parque Verde</div>
+                    <div class="building" style="background: #2ed573; color:#fff; display:flex; align-items:center; justify-content:center; border-radius:8px;">🌳 PARQUE</div>
+                </div>
+
+                <!-- NOVO LOTE 05: FÁBRICA DE RAÇÃO -->
+                <div class="lot" style="left: 1500px;" onclick="alert('🏭 Fábrica de Ração: Em breve novas missões!')">
+                    <div class="lot-number">LOTE 05</div>
+                    <div class="lot-owner">Fábrica</div>
+                    <div class="building" style="background: #ffa502; color:#fff; display:flex; align-items:center; justify-content:center; border-radius:8px;">🏭 FÁBRICA</div>
+                </div>
+
+                <!-- SPRITE DO PET -->
+                <div id="pedro">
+                    <div class="pedro-tag">Pedro</div>
+                    <div class="pedro-body">
+                        <div id="pedro-hat-slot" class="pedro-hat"></div>
+                        <div class="pedro-ears"></div>
+                        <div class="pedro-face"></div>
+                    </div>
+                </div>
+
+                <div class="road" style="width: 1800px;"><div class="road-line" style="width: 1800px;"></div></div>
+            </div>
+        </section>
+
+        <!-- CASA INTERIOR -->
+        <section id="house-view" style="display: none;">
+            <h2 id="house-title">🏠 Sua Casa</h2>
+            <div id="house-wall-box" class="house-wall">
+                <div id="house-furniture" class="furniture">🛋️ 📺 🪴</div>
+                <div class="house-floor"></div>
+            </div>
+            <div class="house-controls">
+                <button id="btn-custom-wall" class="btn-care" onclick="changeWallColor()">🎨 Cor da Parede</button>
+                <button class="btn-care" onclick="switchView('world')">🚪 Sair para a Rua</button>
+            </div>
+        </section>
+
+        <!-- ARCADE HUB -->
+        <section id="arcade-view" style="display: none;">
+            <h2>🕹️ Central de Minigames</h2>
+            <div class="arcade-grid">
+                <div class="game-card">
+                    <h3>🏃 PugRunner</h3>
+                    <p>Corra e pule obstáculos em velocidade crescente!</p>
+                    <button class="btn-play" onclick="startRunner()">Jogar</button>
+                </div>
+                <div class="game-card">
+                    <h3>🐍 PugSnake</h3>
+                    <p>Colete itens e cresça na arena!</p>
+                    <button class="btn-play" onclick="startSnake()">Jogar</button>
+                </div>
+                <div class="game-card">
+                    <h3>⛏️ PugMiner</h3>
+                    <p>Clique rápido e extraia recursos do solo!</p>
+                    <button class="btn-play" onclick="startMiner()">Jogar</button>
+                </div>
+                <div class="game-card">
+                    <h3>🦘 PugJump (Escalada)</h3>
+                    <p>Pule em plataformas infinitas até o topo!</p>
+                    <button class="btn-play" onclick="startJumpGame()">Jogar</button>
+                </div>
+                <div class="game-card">
+                    <h3>🧠 PugMemory</h3>
+                    <p>Teste sua memória combinando os pares do Pedro!</p>
+                    <button class="btn-play" onclick="startMemoryGame()">Jogar</button>
+                </div>
+                <!-- JOGOS NOVOS -->
+                <div class="game-card">
+                    <h3>🐶 Flappy Dog</h3>
+                    <p>Desvie dos canos voando com o Pedro!</p>
+                    <button class="btn-play" onclick="startFlappyDog()">Jogar</button>
+                </div>
+                <div class="game-card">
+                    <h3>🦴 Acerte o Osso</h3>
+                    <p>Clique rápido nos ossos que aparecem!</p>
+                    <button class="btn-play" onclick="startWhackBone()">Jogar</button>
+                </div>
+            </div>
+
+            <!-- TELA DO FLAPPY DOG -->
+            <div id="flappy-view" style="display:none; text-align:center; position:relative; width:100%; height:400px; background:#70c5ce; overflow:hidden; margin-top:15px; border-radius:8px;">
+                <h3 style="color:#fff; margin:10px;">Flappy Dog 🐶</h3>
+                <canvas id="flappy-canvas" width="320" height="260" style="background:#4ec0ca; border:2px solid #fff; display:block; margin:0 auto;"></canvas>
+                <button class="btn-care" onclick="exitFlappyDog()" style="margin-top:10px;">Sair do Jogo</button>
+            </div>
+
+            <!-- TELA DO WHACK-A-BONE -->
+            <div id="whack-view" style="display:none; text-align:center; position:relative; width:100%; height:400px; background:#2f3640; overflow:hidden; color:#fff; margin-top:15px; border-radius:8px;">
+                <h3 style="margin:10px;">🦴 Acerte o Osso! (Pontos: <span id="whack-score">0</span>)</h3>
+                <div id="whack-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 280px; margin: 15px auto;"></div>
+                <button class="btn-care" onclick="exitWhackBone()" style="margin-top:10px;">Sair do Jogo</button>
+            </div>
+        </section>
+
+        <!-- LOJA -->
+        <section id="shop-view" style="display: none;">
+            <h2>🛍️ Boutique de Personalização</h2>
+            <div class="shop-grid">
+                <div class="shop-card">
+                    <div class="icon">👑</div>
+                    <h3>Coroa Real</h3>
+                    <p>🪙 50 Moedas</p>
+                    <button class="btn-buy" onclick="buyHat('👑', 50)">Comprar</button>
+                </div>
+                <div class="shop-card">
+                    <div class="icon">🎩</div>
+                    <h3>Cartola Chique</h3>
+                    <p>🪙 40 Moedas</p>
+                    <button class="btn-buy" onclick="buyHat('🎩', 40)">Comprar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MURAL DE CONQUISTAS DINÂMICO -->
+        <section id="achievements-view" style="display: none;">
+            <h2>🏆 Mural de Conquistas (14 Metas)</h2>
+            <p>Complete marcos na Vila do Mazique para ganhar moedas extras automaticamente!</p>
+            <div id="achievements-dynamic-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px; max-height: 60vh; overflow-y: auto;">
+                <!-- Carregado Dinamicamente pelo pet.js -->
+            </div>
+        </section>
+
+        <!-- MENU DE CONFIGURAÇÕES -->
+        <section id="settings-view" style="display: none; padding: 20px;">
+            <h2>⚙️ Configurações do Jogo</h2>
+            <div style="display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin-top: 20px;">
+                <button class="btn-care" onclick="toggleSound()">🔊 Alternar Efeitos Sonoros</button>
+                <button class="btn-care" style="background: #ff4757;" onclick="resetGameData()">⚠️ Apagar Dados e Reiniciar</button>
+                <button class="btn-care" onclick="switchView('world')">⬅️ Voltar ao Jogo</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL ENGINE DE MINIGAMES -->
+    <div id="game-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeGameModal()">&times;</span>
+            <h2 id="modal-game-title">Minigame Engine</h2>
+            <div id="game-canvas-container"></div>
+            <p id="game-instruction"></p>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/pet.js"></script>
+    <script src="js/arcade.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/particles.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW Fail:', err));
+        }
+    </script>
+</body>
+</html>
