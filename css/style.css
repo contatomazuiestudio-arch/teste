@@ -1,0 +1,85 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; user-select: none; }
+body { background: #121214; color: #fff; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+
+/* BARRA SUPERIOR E STATUS */
+#top-bar { background: #1e1e24; border-bottom: 2px solid #32323d; display: flex; flex-direction: column; padding: 10px; gap: 8px; z-index: 10; }
+.top-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.brand { font-size: 1.1rem; font-weight: bold; color: #ff4757; }
+.stats { display: flex; gap: 8px; font-weight: bold; font-size: 0.85rem; }
+.stat-item { background: #2f3542; padding: 4px 10px; border-radius: 15px; border: 1px solid #57606f; }
+.stat-coin { color: #eccc68; }
+.stat-xp { color: #70a1ff; }
+
+.pet-needs { display: flex; justify-content: space-around; background: #2b2b36; padding: 6px; border-radius: 10px; border: 1px solid #3d3d4e; }
+.need-box { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: bold; }
+.bar-bg { width: 60px; height: 10px; background: #485460; border-radius: 5px; overflow: hidden; border: 1px solid #000; }
+.bar-fill { height: 100%; width: 100%; transition: width 0.3s ease; }
+#fill-hunger { background: #ff6b6b; }
+#fill-hygiene { background: #48dbfb; }
+#fill-happy { background: #feca57; }
+
+.nav-buttons { display: flex; gap: 4px; }
+.nav-buttons button { background: #2f3542; color: #fff; border: 1px solid #57606f; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.nav-buttons button.active { background: #ff4757; border-color: #ff6b81; }
+
+#view-container { flex: 1; position: relative; overflow: hidden; }
+
+/* VIEWS */
+#world-view { width: 100%; height: 100%; position: absolute; background: linear-gradient(to bottom, #70a1ff 0%, #7bed9f 70%, #2ed573 100%); overflow: hidden; touch-action: none; }
+#house-view { width: 100%; height: 100%; position: absolute; background: #f1f2f6; display: none; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; }
+#arcade-view, #shop-view { width: 100%; height: 100%; position: absolute; background: #1e1e24; display: none; padding: 20px; overflow-y: auto; }
+
+/* MUNDO VIRTUAL PARALLAX */
+.parallax-layer { position: absolute; top: 0; left: 0; height: 100%; width: 2200px; pointer-events: none; }
+.mountain { position: absolute; bottom: 130px; border-left: 100px solid transparent; border-right: 100px solid transparent; border-bottom: 120px solid #26de81; opacity: 0.5; }
+#world-stage { width: 3200px; height: 100%; position: absolute; top: 0; left: 0; }
+.road { position: absolute; bottom: 0; width: 100%; height: 130px; background: #57606f; border-top: 8px solid #747d8c; }
+
+/* NUVENS EM MOVIMENTO PARALLAX */
+.cloud { position: absolute; background: rgba(255, 255, 255, 0.8); border-radius: 50px; pointer-events: none; z-index: 1; }
+.cloud::before, .cloud::after { content: ''; position: absolute; background: rgba(255, 255, 255, 0.8); border-radius: 50%; }
+.cloud-1 { width: 100px; height: 36px; top: 50px; left: 150px; animation: floatCloud 40s linear infinite; }
+.cloud-1::before { width: 50px; height: 50px; top: -25px; left: 15px; }
+.cloud-1::after { width: 40px; height: 40px; top: -15px; left: 50px; }
+.cloud-2 { width: 140px; height: 45px; top: 90px; left: 700px; animation: floatCloud 55s linear infinite; }
+.cloud-2::before { width: 60px; height: 60px; top: -30px; left: 20px; }
+.cloud-2::after { width: 50px; height: 50px; top: -20px; left: 70px; }
+@keyframes floatCloud { from { transform: translateX(0); } to { transform: translateX(1200px); } }
+
+/* LOTES */
+.lot { position: absolute; bottom: 130px; width: 270px; height: 230px; background: rgba(255,255,255,0.2); border: 2px dashed rgba(255,255,255,0.8); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 10px; cursor: pointer; z-index: 3; }
+.lot-number { position: absolute; top: -14px; background: #ff4757; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; }
+.lot-owner { position: absolute; top: 12px; background: rgba(0,0,0,0.65); padding: 3px 8px; border-radius: 10px; font-size: 0.75rem; }
+.building { width: 180px; height: 140px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: bold; text-align: center; }
+.house-pedro { background: #ff6b81; border: 4px solid #ff4757; }
+.arcade-building { background: #3742fa; border: 4px solid #5352ed; }
+.shop-building { background: #ffa502; border: 4px solid #eccc68; }
+
+/* MASCOTE ENGINE */
+#pedro { width: 70px; height: 95px; position: absolute; bottom: 110px; left: 180px; transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1); z-index: 5; display: flex; flex-direction: column; align-items: center; }
+.pedro-body { width: 48px; height: 48px; background: #d2dae2; border-radius: 24px; border: 3px solid #485460; position: relative; }
+.pedro-face { width: 28px; height: 18px; background: #1e272e; border-radius: 8px; position: absolute; top: 18px; left: 10px; }
+.pedro-ears { width: 58px; height: 14px; background: #1e272e; position: absolute; top: 4px; left: -5px; border-radius: 8px; z-index: -1; }
+.pedro-hat { position: absolute; top: -14px; font-size: 1.4rem; display: none; }
+.pedro-tag { background: #ff4757; color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; margin-bottom: 2px; }
+
+.pet-actions-overlay { position: absolute; bottom: 15px; left: 15px; display: flex; gap: 8px; z-index: 8; }
+.btn-care { background: #2f3542; color: #fff; border: 1px solid #ff4757; padding: 6px 12px; border-radius: 16px; font-weight: bold; font-size: 0.75rem; cursor: pointer; }
+
+/* CASAS E INTERIOR */
+.house-wall { width: 100%; max-width: 600px; height: 75%; border: 4px solid #2f3542; border-radius: 16px; background: #ffeaa7; position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; overflow: hidden; }
+.house-floor { width: 100%; height: 30%; background: #d2dae2; border-top: 4px solid #808e9b; }
+.furniture { font-size: 3rem; position: absolute; bottom: 32%; }
+.house-controls { margin-top: 10px; display: flex; gap: 10px; }
+
+/* ARCADE E LOJA GRIDS */
+.arcade-grid, .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; max-width: 800px; margin: 20px auto; }
+.game-card, .shop-card { background: #2f3542; border-radius: 12px; padding: 16px; border: 2px solid #57606f; text-align: center; }
+.btn-play, .btn-buy { background: #ff4757; color: #fff; border: none; padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
+
+/* MODAIS DE GAME */
+#game-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 100; align-items: center; justify-content: center; }
+.modal-content { background: #2f3542; border-radius: 16px; padding: 20px; width: 420px; text-align: center; position: relative; border: 2px solid #ff4757; }
+.close-modal { position: absolute; top: 10px; right: 14px; font-size: 1.6rem; cursor: pointer; }
+canvas { background: #000; border-radius: 8px; margin-top: 10px; max-width: 100%; }
+.drag-hint { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); padding: 4px 12px; border-radius: 15px; font-size: 0.7rem; z-index: 8; }
